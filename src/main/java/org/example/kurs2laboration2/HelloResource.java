@@ -1,5 +1,6 @@
 package org.example.kurs2laboration2;
 
+import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import org.example.entities.Product;
@@ -11,7 +12,8 @@ import java.util.List;
 
 @Path("/")
 public class HelloResource {
-    private final Warehouse warehouse = Warehouse.getInstance();
+    @Inject
+    private Warehouse warehouse;
     private final WarehouseService warehouseService = new WarehouseService();
 
     @GET

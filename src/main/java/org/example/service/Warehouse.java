@@ -1,5 +1,7 @@
 package org.example.service;
 
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.ws.rs.ApplicationPath;
 import org.example.entities.Category;
 import org.example.entities.Product;
 
@@ -10,20 +12,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@ApplicationScoped
 public class Warehouse {
-    private static Warehouse instance;
     private final List<Product> products = new ArrayList<>();
-
-    private Warehouse() {
-        // Private constructor to prevent instantiation
-    }
-
-    public static synchronized Warehouse getInstance() {
-        if (instance == null) {
-            instance = new Warehouse();
-        }
-        return instance;
-    }
 
     public void addProduct(String name, Category category, int rating) {
 
