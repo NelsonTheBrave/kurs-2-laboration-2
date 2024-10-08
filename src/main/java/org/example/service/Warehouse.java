@@ -64,20 +64,11 @@ public class Warehouse {
         Warehouse warehouse = new Warehouse();
         WarehouseService warehouseService = new WarehouseService();
 
-        warehouseService.performOperation(() -> {
-            warehouse.addProduct("Apple", Category.FOOD, 5);
-            return null;
-        }, true);
-        warehouseService.performOperation(() -> {
-            warehouse.addProduct("Hawaian Banana", Category.FOOD, 5);
-            return null;
-        }, true);
-        warehouseService.performOperation(() -> {
-            warehouse.modifyProduct(2, "Danish Banana", Category.FOOD, 5);
-            return null;
-        }, true);
+        warehouseService.performWriteOperation(() -> warehouse.addProduct("Apple", Category.FOOD, 5));
+        warehouseService.performWriteOperation(() -> warehouse.addProduct("Hawaian Banana", Category.FOOD, 5));
+        warehouseService.performWriteOperation(() -> warehouse.modifyProduct(2, "Danish Banana", Category.FOOD, 5));
 
-        Optional<Product.ProductRecord> product = warehouseService.performOperation(() -> warehouse.getProductById(2), false);
+        Optional<Product.ProductRecord> product = warehouseService.performReadOperation(() -> warehouse.getProductById(2));
         product.ifPresentOrElse(
                 p -> System.out.println("Product found: " + p),
                 () -> System.out.println("Product not found")
