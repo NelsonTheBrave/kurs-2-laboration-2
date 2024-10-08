@@ -11,10 +11,18 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class Warehouse {
-    public ArrayList<Product> products;
+    private static Warehouse instance;
+    private final List<Product> products = new ArrayList<>();
 
-    public Warehouse() {
-        products = new ArrayList<>();
+    private Warehouse() {
+        // Private constructor to prevent instantiation
+    }
+
+    public static synchronized Warehouse getInstance() {
+        if (instance == null) {
+            instance = new Warehouse();
+        }
+        return instance;
     }
 
     public void addProduct(String name, Category category, int rating) {
@@ -61,17 +69,22 @@ public class Warehouse {
     }
 
     public static void main(String[] args) {
-        Warehouse warehouse = new Warehouse();
-        WarehouseService warehouseService = new WarehouseService();
-
-        warehouseService.performWriteOperation(() -> warehouse.addProduct("Apple", Category.FOOD, 5));
-        warehouseService.performWriteOperation(() -> warehouse.addProduct("Hawaian Banana", Category.FOOD, 5));
-        warehouseService.performWriteOperation(() -> warehouse.modifyProduct(2, "Danish Banana", Category.FOOD, 5));
-
-        Optional<Product.ProductRecord> product = warehouseService.performReadOperation(() -> warehouse.getProductById(2));
-        product.ifPresentOrElse(
-                p -> System.out.println("Product found: " + p),
-                () -> System.out.println("Product not found")
-        );
+//        Warehouse warehouse = new Warehouse();
+//        WarehouseService warehouseService = new WarehouseService();
+//
+//        warehouseService.performWriteOperation(() -> warehouse.addProduct("Apple", Category.FOOD, 5));
+//        warehouseService.performWriteOperation(() -> warehouse.addProduct("Hawaiian Banana", Category.FOOD, 5));
+//        warehouseService.performWriteOperation(() -> warehouse.addProduct("Orange", Category.FOOD, 5));
+//        warehouseService.performWriteOperation(() -> warehouse.addProduct("Pineapple", Category.FOOD, 5));
+//        warehouseService.performWriteOperation(() -> warehouse.modifyProduct(2, "Danish Banana", Category.FOOD, 5));
+//
+//        Optional<Product.ProductRecord> product = warehouseService.performReadOperation(() -> warehouse.getProductById(2));
+//        product.ifPresentOrElse(
+//                p -> System.out.println("Product found: " + p),
+//                () -> System.out.println("Product not found")
+//        );
+//        List<Product.ProductRecord> productList = warehouseService.performReadOperation(warehouse::getAllProducts);
+//        productList.forEach(System.out::println);
+//        System.out.println(productList);
     }
 }

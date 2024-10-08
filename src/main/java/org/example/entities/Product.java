@@ -10,6 +10,11 @@ public class Product {
     public final LocalDateTime manufactureDate;
     public LocalDateTime lastModifiedDate;
 
+    public Product() {
+        manufactureDate = LocalDateTime.now();
+        lastModifiedDate = manufactureDate;
+    }
+
     public Product(int id, String name, Category category, int rating) {
         this.id = id;
         this.name = name;
