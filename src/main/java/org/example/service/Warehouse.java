@@ -16,13 +16,14 @@ import java.util.stream.Collectors;
 public class Warehouse {
     private final List<Product> products = new ArrayList<>();
 
-    public void addProduct(String name, Category category, int rating) {
+    public Product.ProductRecord addProduct(String name, Category category, int rating) {
 
         if (name == null || name.isEmpty()) {
             throw new IllegalArgumentException("Product name cannot be null or empty");
         }
         Product product = new Product(products.size() + 1, name, category, rating);
         products.add(product);
+        return new Product.ProductRecord(product.id, product.name, product.category, product.rating, product.manufactureDate, product.lastModifiedDate);
     }
 
     public void modifyProduct(int id, String newName, Category newCategory, int newRating) {

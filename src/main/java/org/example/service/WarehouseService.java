@@ -18,10 +18,10 @@ public class WarehouseService {
         }
     }
 
-    public void performWriteOperation(Runnable operation) {
+    public <T> T performWriteOperation(Supplier<T> operation) {
         lock.writeLock().lock();
         try {
-            operation.run();
+            return operation.get();
         } finally {
             lock.writeLock().unlock();
         }
