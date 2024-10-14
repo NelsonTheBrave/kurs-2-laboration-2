@@ -9,11 +9,16 @@ import org.example.entities.Product;
 import org.example.entities.ProductDTO;
 import org.example.service.Warehouse;
 import org.example.service.WarehouseService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 @Path("/")
 public class HelloResource {
+
+    private static final Logger logger = LoggerFactory.getLogger(HelloResource.class);
+
     @Inject
     private Warehouse warehouse;
     private final WarehouseService warehouseService = new WarehouseService();
@@ -23,6 +28,7 @@ public class HelloResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllProducts() {
         List<Product.ProductRecord> allProducts =  warehouseService.performReadOperation(warehouse::getAllProducts);
+        logger.info("Returning all products");
         return Response.ok(allProducts).build();
     }
 
@@ -30,6 +36,7 @@ public class HelloResource {
     @Path("/products/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getProductById(@PathParam("id") int id) {
+        logger.info("Returning product with id {}", id);
         return warehouseService.performReadOperation(() -> warehouse.getProductById(id))
                 .map(product -> Response.ok(product).build())
                 .orElse(Response.status(Response.Status.NOT_FOUND).build());
@@ -45,6 +52,8 @@ public class HelloResource {
         } catch (IllegalArgumentException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity("Invalid category").build();
         }
+
+        logger.info("Returning products with category {}", categoryEnum);
         List<Product.ProductRecord> products = warehouseService.performReadOperation(() -> warehouse.getProductsByCategory(categoryEnum));
         if (products.isEmpty()) {
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -58,6 +67,7 @@ public class HelloResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response addProduct(ProductDTO productDTO) {
+        logger.info("Adding product with name {}", productDTO.name);
         Product.ProductRecord addedProduct = warehouseService.performWriteOperation(() -> warehouse.addProduct(productDTO.name, productDTO.category, productDTO.rating));
         return Response.status(Response.Status.CREATED).entity(addedProduct).build();
     }
