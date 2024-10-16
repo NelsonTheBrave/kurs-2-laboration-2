@@ -1,10 +1,12 @@
 package org.example.entities;
 
+import jakarta.validation.constraints.NotEmpty;
+
 import java.time.LocalDateTime;
 
 public class Product {
     public int id;
-    public String name;
+    public @NotEmpty(message = "Name is required") String name;
     public Category category;
     public int rating;
     public final LocalDateTime manufactureDate;
@@ -28,7 +30,8 @@ public class Product {
         this.lastModifiedDate = lastModifiedDate;
     }
 
-    public record ProductRecord(int id, String name, Category category, int rating, LocalDateTime manufactureDate, LocalDateTime lastModifiedDate) {
+    public record ProductRecord(int id, String name, Category category, int rating, LocalDateTime manufactureDate,
+                                LocalDateTime lastModifiedDate) {
     }
 
 }
